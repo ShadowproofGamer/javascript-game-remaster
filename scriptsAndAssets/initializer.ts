@@ -11,7 +11,7 @@ function ImageManager(placeholderDataUri) {
     }
 }
 
-_p = ImageManager.prototype;
+const _p = ImageManager.prototype;
 
 
 _p.load = function(images, onDone, onProgress) {

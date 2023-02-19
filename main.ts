@@ -30,7 +30,7 @@ function onLoaded() {
 
 
 function initFullScreenCanvas(canvasId) {
-    var canvas = document.getElementById(canvasId);
+    const canvas = document.getElementById(canvasId);
     resizeCanvas(canvas);
     window.addEventListener("resize", function() {
         resizeCanvas(canvas);
@@ -39,8 +39,8 @@ function initFullScreenCanvas(canvasId) {
 }
 
 function resizeCanvas(canvas) {
-    canvas.width  = document.width || document.body.clientWidth;
-    canvas.height = document.height || document.body.clientHeight;
+    canvas.width  = document.body.clientWidth;
+    canvas.height = document.body.clientHeight;
 }
 
 

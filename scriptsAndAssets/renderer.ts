@@ -81,9 +81,9 @@ function repaint(){
 
 
 //rysuje koło (bohatera):
-function heroRenderer(hero, ctx, fill, stroke){
-    ctx.fillStyle = fill || "orange";
-    ctx.strokeStyle = stroke || "black";
+function heroRenderer(hero, ctx, ...options){
+    ctx.fillStyle = options[0] || "orange";
+    ctx.strokeStyle = options[1] || "black";
     ctx.arc(hero.dx,hero.dy,12,0,360,false);
     ctx.fill();
     ctx.stroke();
@@ -92,9 +92,9 @@ function heroRenderer(hero, ctx, fill, stroke){
     ctx.stroke();
 }
 //dla testów kotwiczki mieczyka
-function testPoint(cords, ctx, fill){
+function testPoint(cords, ctx, ...fill){
     ctx.beginPath();
-    ctx.fillStyle = fill || "red";
+    ctx.fillStyle = fill[0] || "red";
     ctx.arc(cords.dx, cords.dy,2,0,360,false);
     ctx.fill();
     ctx.stroke();
@@ -115,13 +115,13 @@ function weaponRenderer(weapon, ctx, trans){
 //function objectRenderer(){}
 //pokazuje hitboxy:
 function showHitbox(hitboxArray, ctx){
-    var _hit = hitboxArray;
+    const _hit:Hitbox[] = hitboxArray;
     //console.log(_hit);
     for(var i=0;i<_hit.length;i++){
-        var x = _hit[i][2];
-        var y = _hit[i][0];
-        var width = _hit[i][3] - _hit[i][2];
-        var height = _hit[i][1] - _hit[i][0];
+        const x = _hit[i].left;
+        const y = _hit[i].top;
+        const width = _hit[i].right - _hit[i].left;
+        const height = _hit[i].bottom - _hit[i].top;
         //renderuje hitbox na płótnie:
         ctx.beginPath();
         ctx.fillStyle = "red";
@@ -129,3 +129,4 @@ function showHitbox(hitboxArray, ctx){
         ctx.fill();
     }
 }
+

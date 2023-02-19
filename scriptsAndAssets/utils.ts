@@ -23,27 +23,11 @@ function isTouchDevice() {
 }
 
 window.requestAnimationFrame = (function(){
-    // Sprawdź dla wszystkich przeglądarek
-    //@paul_irish function
-    // Funkcja pozwala na wykorzystanie wszystkich przeglądarek.
-    return  window.requestAnimationFrame       ||  //Chromium
-        window.webkitRequestAnimationFrame ||  //Webkit
-        window.mozRequestAnimationFrame    || //Mozilla Geko
-        window.oRequestAnimationFrame      || //Opera Presto
-        window.msRequestAnimationFrame     || //IE Trident?
-        function(callback, element){ // Funkcja awaryjna
-            console.log("Funkcja awaryjna");
-            return window.setTimeout(callback, 1000/30);
-        }
-
+    return  window.requestAnimationFrame
 })();
 
 window.cancelRequestAnimFrame = ( function() {
-    return window.cancelAnimationFrame          ||
-        window.webkitCancelRequestAnimationFrame    ||
-        window.mozCancelRequestAnimationFrame       ||
-        window.oCancelRequestAnimationFrame     ||
-        window.msCancelRequestAnimationFrame        ||
+    return window.cancelAnimationFrame||
         clearTimeout
 } )();
 
