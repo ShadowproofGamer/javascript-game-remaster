@@ -1,4 +1,5 @@
-import * as scripts from "scriptsAndAssets/collider";
+// @ts-ignore
+let keysPressed:Keybinds = new Map<string, boolean>();
 
 function init() {
     canvas = initFullScreenCanvas("mainCanvas");
@@ -48,24 +49,28 @@ function resizeCanvas(canvas) {
 
 
 var initListeners = function(){
-    addEventListener("keydown", function(e){
-        keysPressed[e.which]= true;
+    addEventListener("keydown", function(e:KeyboardEvent){
+        keysPressed.set(e.key, true);
         //console.log(e.which);
         //console.log(sword.rotation);
     });
-    addEventListener("keyup", function(e){
-        keysPressed[e.which]= false;
+    addEventListener("keyup", function(e:KeyboardEvent){
+        keysPressed.set(e.key, false);
     });
 }
-var heroMove = function(){
-    if(keysPressed[37]){sword.dx -= 2}
-    if(keysPressed[38]){sword.dy -= 2}
-    if(keysPressed[39]){sword.dx += 2}
-    if(keysPressed[40]){sword.dy += 2}
-    if(keysPressed[81]){sword.rotation -= 6}
-    if(keysPressed[69]){sword.rotation += 6}
-    if(keysPressed[32]){shotLaunched=true}
-    if(keysPressed[79]){repaint(canvas)}
-    requestAnimationFrame(arguments.callee);
+type keyBinds = { top:string, bottom:string, left:string, right:string, rotLeft:string, rotRight:string, fire:string, other?:string[] }
+var heroMove = function(
+    controls:keyBinds = {
+    top:"ArrowUp", bottom:"ArrowDown", left:"ArrowLeft", right:"ArrowRight", rotLeft:"q", rotRight:"e", fire:" "
+}){
+    if(keysPressed.get(controls.left)){sword.dx -= 2}
+    if(keysPressed.get(controls.top)){sword.dy -= 2}
+    if(keysPressed.get(controls.right)){sword.dx += 2}
+    if(keysPressed.get(controls.bottom)){sword.dy += 2}
+    if(keysPressed.get(controls.rotLeft)){sword.rotation -= 6}
+    if(keysPressed.get(controls.rotRight)){sword.rotation += 6}
+    if(keysPressed.get(controls.fire)){shotLaunched=true}
+    //if(keysPressed.get(controls.pause)){repaint(canvas)}
+    requestAnimationFrame(<FrameRequestCallback>arguments.callee);
 
 }

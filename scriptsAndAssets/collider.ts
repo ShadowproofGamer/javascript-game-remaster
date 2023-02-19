@@ -1,14 +1,18 @@
+import {CanvasRender, Hitbox, Weapon, Obstacle} from "./objects_classes";
+
 class collider {
     dir = [];
+    constructor() {
 
-    checkCollision(doubleLayerArray: Hitbox[], weaponPosition: any, options=0) {
+    }
+    public checkCollision(doubleLayerArray: Hitbox[], weaponPosition: any, canvas:HTMLCanvasElement|{height:number, width:number} = {height:144, width:144},  tolerance:number =0 ) {
 
         //_arr- tablica dwuwymiarowa zawierająca wszystkie hitboxy w grze
         //_arr[nr przedmiotu][0=górna granica, 1=dolna, 2=lewa, 3=prawa]
         let _arr = doubleLayerArray;
 
         // pozycja przedmiotu który może wejść w kolizje
-        let _pos = weaponPosition;
+        const _pos = weaponPosition;
         let collision = false;
         for (let i = 0; i < _arr.length; i++) {
             /*
@@ -20,10 +24,10 @@ class collider {
             pos.py<=0||pos.py>canvas.height||pos.px<0||pos.px>canvas.width -mieczyk wylatuje z ekranu
             i -numer przedmiotu w tablicy
              */
-            if (typeof options != "number") {
-                options = 0
+            if (typeof tolerance != "number") {
+                tolerance = 0
             }
-            const con = options;
+            const con = tolerance;
             if (
                 (_pos.py >= _arr[i].top - con && _pos.py <= _arr[i].bottom + con && _pos.px >= _arr[i].left - con && _pos.px <= _arr[i].right + con)
                 || _pos.py <= con
@@ -39,59 +43,55 @@ class collider {
     }
 
 //wykrywa kolizje bohatera z granicą płótna:
-    heroCollider(hero) {
-        if (hero.dy < 12) {
-            hero.dy = 12
+    public heroCollider(hero, canvas:HTMLCanvasElement|{height:number, width:number} = {height:144, width:144}, tolerance:number =12) {
+        if (hero.dy < tolerance) {
+            hero.dy = tolerance
         }
-        if (hero.dx < 12) {
-            hero.dx = 12
+        if (hero.dx < tolerance) {
+            hero.dx = tolerance
         }
-        if (hero.dy > canvas.height - 12) {
-            hero.dy = canvas.height - 12
+        if (hero.dy > canvas.height - tolerance) {
+            hero.dy = canvas.height - tolerance
         }
-        if (hero.dx > canvas.width - 12) {
-            hero.dx = canvas.width - 12
+        if (hero.dx > canvas.width - tolerance) {
+            hero.dx = canvas.width - tolerance
         }
+        new HTMLCanvasElement().getContext("2d")
     }
 
 //wykrywa kolizję dowolnej postaci z dowolnym hitboxem:
-    heroCollider2(doubleLayerArray:Hitbox[], hero, options) {
+    public heroCollider2(doubleLayerArray:Hitbox[], hero, tolerance:number =0) {
         this.heroCollider(hero);
-        var _array = doubleLayerArray;
-        var xCollision = [];
-        var yCollision = [];
-
-        if (typeof options != "number") {
-            options = 0
-        }
-        var con = options;
+        const _array = doubleLayerArray;
+        let xCollision = [];
+        let yCollision = [];
 
         for (let i = 0; i < _array.length; i++) {
-            if (hero.dy >= _array[i].top - con && hero.dy <= _array[i].bottom + con) {
+            if (hero.dy >= _array[i].top - tolerance && hero.dy <= _array[i].bottom + tolerance) {
                 yCollision[i] = true
             }
-            if (hero.dx >= _array[i].left - con && hero.dx <= _array[i].right + con) {
+            if (hero.dx >= _array[i].left - tolerance && hero.dx <= _array[i].right + tolerance) {
                 xCollision[i] = true
             }
             if (yCollision[i] === true && xCollision[i] === true) {
                 if ((this.dir)[i] === "left") {
-                    hero.dx = _array[i].left - con
+                    hero.dx = _array[i].left - tolerance
                 } else if ((this.dir)[i] === "right") {
-                    hero.dx = _array[i].right + con
+                    hero.dx = _array[i].right + tolerance
                 } else if ((this.dir)[i] === "top") {
-                    hero.dy = _array[i].top - con
+                    hero.dy = _array[i].top - tolerance
                 } else if ((this.dir)[i] === "bottom") {
-                    hero.dy = _array[i].bottom + con
+                    hero.dy = _array[i].bottom + tolerance
                 }
                 break;
             } else {
-                if (hero.dy <= _array[i].top - con && xCollision[i] === true) {
+                if (hero.dy <= _array[i].top - tolerance && xCollision[i] === true) {
                     (this.dir)[i] = "top"
-                } else if (hero.dy >= _array[i].bottom - con && xCollision[i] === true) {
+                } else if (hero.dy >= _array[i].bottom - tolerance && xCollision[i] === true) {
                     (this.dir)[i] = "bottom"
-                } else if (hero.dx <= _array[i].left - con && yCollision[i] === true) {
+                } else if (hero.dx <= _array[i].left - tolerance && yCollision[i] === true) {
                     (this.dir)[i] = "left"
-                } else if (hero.dx >= _array[i].right - con && yCollision[i] === true) {
+                } else if (hero.dx >= _array[i].right - tolerance && yCollision[i] === true) {
                     (this.dir)[i] = "right"
                 }
             }

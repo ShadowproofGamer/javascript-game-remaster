@@ -1,3 +1,6 @@
+import {Hitbox, Weapon} from "./objects_classes";
+import {collider} from "./collider";
+
 var tOrig = Date.now();
 var animsDone = 0;
 var t = Date.now()-tOrig;
@@ -8,18 +11,18 @@ var preMove = false;
 function repaint(){
     //t = Date.now() - tOrig;
     //animsDone++;
-    var ctx = canvas.getContext('2d');
-    var weapon = sword;
-    var hero = sword;
-
+    const ctx = canvas.getContext('2d');
+    const weapon:Weapon = sword;
+    const hero:Weapon = sword;
+    const coll = new collider();
     //czyszczenie płótna:
     ctx.fillStyle = "white";
     ctx.fillRect(0,0, canvas.width, canvas.height);
     ctx.beginPath();
     heroRenderer(hero, ctx);
 
-    heroCollider2(hitboxArray, hero, 11);
-
+    collider.heroCollider2(hitboxArray, hero, 11);
+    let pos
     showHitbox(hitboxArray, ctx);
     if(shotLaunched === false){
         //pobiera dane żeby poprawnie obsłużyć ewentualny strzał:
@@ -74,7 +77,7 @@ function repaint(){
 
     // [!testowe] wypisuje watrość t i animsDone
     //console.log("czas: "+t+ " liczba animacji: "+ animsDone);
-    renderHook = requestAnimationFrame(arguments.callee);
+    renderHook = requestAnimationFrame(<FrameRequestCallback>arguments.callee);
     if(keysPressed[80]){cancelAnimationFrame(renderHook)}
 }
 
@@ -100,7 +103,7 @@ function testPoint(cords, ctx, ...fill){
     ctx.stroke();
 }
 //rysuje mieczyk u gracza z właściwym obrotem:
-function weaponRenderer(weapon, ctx, trans){
+function weaponRenderer(weapon, ctx, trans?){
     if(!trans){
         trans = weapon;
         trans.px = weapon.dx;
